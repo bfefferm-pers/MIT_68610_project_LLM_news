@@ -8,7 +8,7 @@ def test_pbf_score_perfect_fidelity():
                                 [0, 0],
                                 [1, 1]])
     score = compute_pbf_score(true_bias, predicted_bias)
-    assert 0.0 == pytest.approx(score)
+    assert 1.  == pytest.approx(score)
 
 def test_pbf_score_no_fidelity():
     true_bias = np.array([-1, 0., 1.])
@@ -16,23 +16,31 @@ def test_pbf_score_no_fidelity():
                                 [-1, 1],
                                 [-1, -1]])
     score = compute_pbf_score(true_bias, predicted_bias)
-    assert 3.0 == pytest.approx(score)
+    assert 0.1339745962155614 == pytest.approx(score)
 
-def test_pbf_score_no_fidelity2():
-    true_bias = np.array([-1, 0., 1.])
-    predicted_bias = np.array([[1, 1, 1],
-                                [-1, 1, -1],
-                                [-1, -1, -1]])
+def test_pbf_score_lowest_fidelity():
+    true_bias = np.array([-1, 1, 1.])
+    predicted_bias = np.array([[1, 1],
+                                [-1, -1],
+                                [-1, -1]])
     score = compute_pbf_score(true_bias, predicted_bias)
-    assert 3.0 == pytest.approx(score)
+    assert 0 == pytest.approx(score)
 
 def test_pbf_score_no_bias():
-    true_bias = np.array([-1, 0., 1.])
+    true_bias = np.array([-1, 1., 1.])
     predicted_bias = np.array([[0, 0],
                                 [0, 0],
                                 [0, 0]])
     score = compute_pbf_score(true_bias, predicted_bias)
-    assert 1.4142135623730951 == pytest.approx(score)
+    assert 0.5 == pytest.approx(score)
+
+def test_pbf_score_no_bias2():
+    true_bias = np.array([-1, 0, 1.])
+    predicted_bias = np.array([[0, 0],
+                                [0, 0],
+                                [0, 0]])
+    score = compute_pbf_score(true_bias, predicted_bias)
+    assert 0.591751709536137 == pytest.approx(score)
 
 def test_pbi_score_perfect_fidelity():
     true_bias = np.array([-1, 0., 1.])
@@ -40,7 +48,7 @@ def test_pbi_score_perfect_fidelity():
                                 [0, 0],
                                 [1, 1]])
     score = compute_pbi_score(true_bias, predicted_bias)
-    assert 2.449489742783178 == pytest.approx(score)
+    assert 0. == pytest.approx(score)
 
 def test_pbi_score_no_fidelity():
     true_bias = np.array([-1, 0., 1.])
@@ -48,7 +56,7 @@ def test_pbi_score_no_fidelity():
                                 [-1, 1],
                                 [-1, -1]])
     score = compute_pbi_score(true_bias, predicted_bias)
-    assert 1.7320508075688772 == pytest.approx(score)
+    assert 1. == pytest.approx(score)
 
 def test_pbi_score_no_fidelity2():
     true_bias = np.array([-1, 0., 1.])
@@ -56,4 +64,12 @@ def test_pbi_score_no_fidelity2():
                                 [-1, 1, -1],
                                 [-1, -1, -1]])
     score = compute_pbi_score(true_bias, predicted_bias)
-    assert 1.7320508075688772 == pytest.approx(score)
+    assert 1. == pytest.approx(score)
+
+def test_pbi_score_mixed_fidelity():
+    true_bias = np.array([-1, 0., 1.])
+    predicted_bias = np.array([[1, 1],
+                                [-1, 0],
+                                [-1, -1]])
+    score = compute_pbi_score(true_bias, predicted_bias)
+    assert 0.8333333333333333 == pytest.approx(score)
