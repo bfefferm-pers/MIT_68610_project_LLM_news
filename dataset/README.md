@@ -1,0 +1,1 @@
+Processing articles from [emnlp19-media-bias](https://github.com/marshallwhiteorg/emnlp19-media-bias). Run processing.py with [html](https://github.com/marshallwhiteorg/emnlp19-media-bias/tree/master/data/html) (input) in the dataset folder.
