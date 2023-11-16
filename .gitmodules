@@ -1,0 +1,3 @@
+[submodule "POLITICS_finetuning/BASIL"]
+	path = POLITICS_finetuning/BASIL
+	url = https://github.com/launchnlp/BASIL.git
