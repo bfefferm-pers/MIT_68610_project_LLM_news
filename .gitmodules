@@ -1,3 +1,6 @@
 [submodule "POLITICS_finetuning/BASIL"]
 	path = POLITICS_finetuning/BASIL
 	url = https://github.com/launchnlp/BASIL.git
+[submodule "POLITICS_finetuning/Article-Bias-Prediction"]
+	path = POLITICS_finetuning/Article-Bias-Prediction
+	url = https://github.com/ramybaly/Article-Bias-Prediction.git
