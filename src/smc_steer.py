@@ -23,7 +23,7 @@ class2id = {
 # bias_model = bias_model_factory(path_to_bias_model, path_to_bias_tokenizer)
 # llm = CachedCausalLM.from_pretrained(llm_model_name)
 
-# summary = asyncio.run(gen_summary(llm_model_name, llm, bias_model, TwistModel, article, 'center'))
+# summary = await gen_summary(llm_model_name, llm, bias_model, TwistModel, article, 'center')
 
 
 def bias_model_factory(bias_model_name, bias_tokenizer_name):
@@ -116,16 +116,16 @@ async def gen_summary(llm_name, llm, bias_model, steer_model, article, target_bi
 
     particles = await smc_standard(model, 10)
 
-    for i, p in enumerate(particles):
-        print(f'Summary {i+1}:')
+    # for i, p in enumerate(particles):
+    #     print(f'Summary {i+1}:')
 
-        summary = str(p.context.s)[p.prompt_len+1:-1]
-        print(summary)
+    #     summary = str(p.context.s)[p.prompt_len+1:-1]
+    #     print(summary)
 
-        pred_bias, _ = bias_model(summary)
-        print(pred_bias)
-        print(p.weight)
-        print()
+    #     pred_bias, _ = bias_model(summary)
+    #     print(pred_bias)
+    #     print(p.weight)
+    #     print()
 
     weights = np.array([p.weight for p in particles])
     if weights.shape[0] == 0:
@@ -133,4 +133,4 @@ async def gen_summary(llm_name, llm, bias_model, steer_model, article, target_bi
         return ''
 
     best_particle = particles[weights.argmax()]
-    return str(best_particle.context.s)[p.prompt_len+1:-1]
+    return str(best_particle.context.s)[best_particle.prompt_len+1:-1]
