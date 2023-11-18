@@ -4,3 +4,6 @@
 [submodule "POLITICS_finetuning/Article-Bias-Prediction"]
 	path = POLITICS_finetuning/Article-Bias-Prediction
 	url = https://github.com/ramybaly/Article-Bias-Prediction.git
+[submodule "hfppl"]
+	path = hfppl
+	url = https://github.com/probcomp/hfppl
