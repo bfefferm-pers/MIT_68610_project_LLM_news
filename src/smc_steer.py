@@ -75,7 +75,7 @@ class NaiveModel(Model):
         self.max_len -= 1
 
   def condition_on_bias(self):
-    summary = str(self.context.s)[self.prompt_len+1:]
+    summary = str(self.context.s)[self.prompt_len:]
     bias, _ = self.bias_model(summary)
     # print(bias)
     self.condition(bias == self.target_bias)
@@ -100,7 +100,7 @@ class NaiveModel(Model):
 # everything else the same as the Naive Model
 class TwistModel(NaiveModel):
     def condition_on_bias(self):
-        summary = str(self.context.s)[self.prompt_len+1:]
+        summary = str(self.context.s)[self.prompt_len:]
         _, bias_logits = self.bias_model(summary)
         # print(bias_logits[class2id[self.target_bias]])
         self.twist(bias_logits[class2id[self.target_bias]])
@@ -133,4 +133,4 @@ async def gen_summary(llm_name, llm, bias_model, steer_model, article, target_bi
         return ''
 
     best_particle = particles[weights.argmax()]
-    return str(best_particle.context.s)[best_particle.prompt_len+1:-1]
+    return str(best_particle.context.s)[best_particle.prompt_len:-1]
