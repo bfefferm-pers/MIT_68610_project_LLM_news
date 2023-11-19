@@ -51,7 +51,7 @@ class NaiveModel(Model):
   def __init__(self, lm, bias_model, prompt, target_bias, max_len=512):
     super().__init__()
 
-    lm.cache_kv(lm.tokenizer.encode(prompt))
+    # lm.cache_kv(lm.tokenizer.encode(prompt))
 
     self.context = LMContext(lm, prompt)
 
@@ -133,4 +133,4 @@ async def gen_summary(llm_name, llm, bias_model, steer_model, article, target_bi
         return ''
 
     best_particle = particles[weights.argmax()]
-    return str(best_particle.context.s)[best_particle.prompt_len:-1]
+    return str(best_particle.context.s)[best_particle.prompt_len:]
