@@ -1,6 +1,6 @@
 from hfppl import Model, LMContext, TokenCategorical, CachedCausalLM, smc_steer, smc_standard
 import torch
-from transformers import AutoTokenizer, AutoModelForMaskedLM, AutoModelForSequenceClassification
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -48,12 +48,13 @@ def bias_model_factory(bias_model_name, bias_tokenizer_name):
     return bias_model
 
 class NaiveModel(Model):
-  def __init__(self, lm, bias_model, prompt, target_bias, max_len=512):
+  def __init__(self, lm_name, lm, bias_model, prompt, target_bias, max_len=512):
     super().__init__()
 
-    lm.cache_kv(lm.tokenizer.encode(prompt))
+    # lm.cache_kv(lm.tokenizer.encode(prompt))
 
     self.context = LMContext(lm, prompt)
+    self.lm_name = lm_name
 
     self.prompt_len = len(str(self.context.s))
 
@@ -62,6 +63,9 @@ class NaiveModel(Model):
     self.max_len = max_len
 
     self.bias_model = bias_model
+
+  def get_summary(self):
+    return str(self.context.s)[self.prompt_len:]
 
   async def gen_sentence(self):
     token = await self.sample(self.context.next_token())
@@ -75,7 +79,7 @@ class NaiveModel(Model):
         self.max_len -= 1
 
   def condition_on_bias(self):
-    summary = str(self.context.s)[self.prompt_len:]
+    summary = self.get_summary()
     bias, _ = self.bias_model(summary)
     # print(bias)
     self.condition(bias == self.target_bias)
@@ -95,31 +99,35 @@ class NaiveModel(Model):
       self.finish()
 
   def immutable_properties(self):
-      return set(['target_bias', 'prompt_len', 'bias_model'])
+      return set(['target_bias', 'prompt_len', 'bias_model', 'lm_name'])
 
 # everything else the same as the Naive Model
 class TwistModel(NaiveModel):
     def condition_on_bias(self):
-        summary = str(self.context.s)[self.prompt_len:]
+        summary = self.get_summary()
         _, bias_logits = self.bias_model(summary)
         # print(bias_logits[class2id[self.target_bias]])
         self.twist(bias_logits[class2id[self.target_bias]])
 
 async def gen_summary(llm_name, llm, bias_model, steer_model, article, target_bias):
     prompt = f'Summarize this article: {article}'
+    prompt = llm.tokenizer.bos_token + prompt
 
-    if llm_name in ['gpt2']:
-        print('Note: llm is gpt2 so prepend endoftext')
-        prompt = f'<|endoftext|>{prompt}'
+    end_prompt = '\nSummary:'
+    end_prompt_len = llm.tokenizer(end_prompt, return_tensors="pt").input_ids.shape[1]
 
-    model = steer_model(llm, bias_model, prompt, target_bias)
+    inputs = llm.tokenizer(prompt, return_tensors="pt", truncation=True, max_length=llm.tokenizer.model_max_length - 512 - end_prompt_len)
+
+    prompt = llm.tokenizer.decode(inputs.input_ids[0]) + end_prompt
+
+    model = steer_model(llm_name, llm, bias_model, prompt, target_bias)
 
     particles = await smc_standard(model, 10)
 
     # for i, p in enumerate(particles):
     #     print(f'Summary {i+1}:')
 
-    #     summary = str(p.context.s)[p.prompt_len+1:-1]
+    #     summary = p.get_summary()
     #     print(summary)
 
     #     pred_bias, _ = bias_model(summary)
@@ -133,4 +141,4 @@ async def gen_summary(llm_name, llm, bias_model, steer_model, article, target_bi
         return ''
 
     best_particle = particles[weights.argmax()]
-    return str(best_particle.context.s)[best_particle.prompt_len:-1]
+    return best_particle.get_summary()
