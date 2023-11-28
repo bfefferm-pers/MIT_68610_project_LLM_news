@@ -3,8 +3,6 @@ import torch
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import numpy as np
 
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
 classes = np.array(['center', 'left', 'right'])
 class2id = {
     'center': 0,
@@ -27,10 +25,15 @@ class2id = {
 
 
 def bias_model_factory(bias_model_name, bias_tokenizer_name):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
     bias_prediction_tokenizer = AutoTokenizer.from_pretrained(bias_tokenizer_name)
 
-    bias_prediction_model = AutoModelForSequenceClassification.from_pretrained(bias_model_name)
-    _ = bias_prediction_model.to(device)
+    if torch.cuda.is_available():
+        bias_prediction_model = AutoModelForSequenceClassification.from_pretrained(bias_model_name, device_map='auto')
+    else:
+        bias_prediction_model = AutoModelForSequenceClassification.from_pretrained(bias_model_name)
+        _ = bias_prediction_model.to(device)
 
     def bias_model(text):
         text_enc = bias_prediction_tokenizer(
