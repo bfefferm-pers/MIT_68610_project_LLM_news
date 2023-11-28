@@ -64,6 +64,7 @@ class NaiveModel(Model):
     self.target_bias = target_bias
 
     self.max_len = max_len
+    self.n_sentences = 3
 
     self.bias_model = bias_model
 
@@ -88,6 +89,7 @@ class NaiveModel(Model):
     self.condition(bias == self.target_bias)
 
   async def step(self):
+    self.n_sentences -= 1
     sentence = []
     async for token in self.gen_sentence():
         sentence.append(token)
@@ -98,7 +100,7 @@ class NaiveModel(Model):
 
     self.condition_on_bias()
 
-    if sentence[-1].token_id == self.context.lm.tokenizer.eos_token_id or self.max_len <= 0:
+    if sentence[-1].token_id == self.context.lm.tokenizer.eos_token_id or self.max_len <= 0 or self.n_sentences <= 0:
       self.finish()
 
   def immutable_properties(self):
