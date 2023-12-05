@@ -40,7 +40,7 @@ def bias_model_factory(bias_model_name, bias_tokenizer_name):
             [text], truncation=True, padding=True, return_tensors='pt')
 
         outputs = bias_prediction_model(text_enc.input_ids.to(
-            device), attention_mask=text_enc.attention_mask.to(device))
+            bias_prediction_model.device), attention_mask=text_enc.attention_mask.to(bias_prediction_model.device))
         logits = outputs.logits.detach().cpu()
 
         # Softmax makes more sense for single classifications
