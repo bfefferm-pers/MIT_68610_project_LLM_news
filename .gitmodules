@@ -1,9 +1,3 @@
-[submodule "POLITICS_finetuning/BASIL"]
-	path = POLITICS_finetuning/BASIL
-	url = https://github.com/launchnlp/BASIL.git
-[submodule "POLITICS_finetuning/Article-Bias-Prediction"]
-	path = POLITICS_finetuning/Article-Bias-Prediction
-	url = https://github.com/ramybaly/Article-Bias-Prediction.git
 [submodule "hfppl"]
 	path = vendors/hfppl
 	url = https://github.com/ellieyhcheng/hfppl.git
@@ -13,3 +7,9 @@
 [submodule "vendors/TransformerLens"]
 	path = vendors/TransformerLens
 	url = https://github.com/ellieyhcheng/TransformerLens.git
+[submodule "political_bias_classifier/Article-Bias-Prediction"]
+	path = political_bias_classifier/Article-Bias-Prediction
+	url = https://github.com/ramybaly/Article-Bias-Prediction.git
+[submodule "political_bias_classifier/BASIL"]
+	path = political_bias_classifier/BASIL
+	url = https://github.com/launchnlp/BASIL.git
