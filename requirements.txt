@@ -13,7 +13,6 @@ executing==2.0.1
 filelock==3.13.1
 fonttools==4.44.0
 fsspec==2023.10.0
-hfppl @ file:///Users/ellieyhc/Documents/School/23-24/6.8610/project/NLP-Project/hfppl
 huggingface-hub==0.19.4
 idna==3.4
 iniconfig==2.0.0

@@ -5,5 +5,11 @@
 	path = POLITICS_finetuning/Article-Bias-Prediction
 	url = https://github.com/ramybaly/Article-Bias-Prediction.git
 [submodule "hfppl"]
-	path = hfppl
-	url = https://github.com/probcomp/hfppl
+	path = vendors/hfppl
+	url = https://github.com/ellieyhcheng/hfppl.git
+[submodule "activation_additions"]
+	path = vendors/activation_additions
+	url = https://github.com/ellieyhcheng/activation_additions.git
+[submodule "vendors/TransformerLens"]
+	path = vendors/TransformerLens
+	url = https://github.com/ellieyhcheng/TransformerLens.git
