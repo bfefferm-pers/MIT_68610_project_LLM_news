@@ -1,0 +1,28 @@
+11/18:
+
+HFValidationError: Repo id must be in the form 'repo_name' " before? Usually I specify a path from the HF hub
+
+RuntimeError: CUDA error: device-side assert triggered
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1.
+Compile with TORCH_USE_CUDA_DSA to enable device-side assertions.
+
+11/25:
+
+RuntimeError: Failed to import transformers.integrations.bitsandbytes because of the following error (look up to see its traceback):
+CUDA Setup failed despite GPU being available. Please run the following command to get more information:
+
+11/29:
+
+AssertionError: The prompt is shorter than the activation sequence to be added.
+
+RuntimeError: Expected all tensors to be on the same device, but found at least two devices, cuda:7 and cuda:0!
+
+11/30:
+
+ERROR: Could not find a version that satisfies the requirement torch!=2.0,!=2.1.0,>=1.10 (from transformer-lens) (from versions: none)
+ERROR: No matching distribution found for torch!=2.0,!=2.1.0,>=1.10
+
+12/5:
+
+AttributeError: 'HookedTransformer' object has no attribute 'device'
