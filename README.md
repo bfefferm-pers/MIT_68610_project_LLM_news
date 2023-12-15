@@ -2,6 +2,7 @@
 Group project for 6.8610: Quantitative Methods for NLP for Group 5. 
 
 ## Setup
+
 ```bash
 pip install -r requirements.txt
 git submodule init 
