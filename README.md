@@ -20,3 +20,5 @@ cd ../..
 Download the model and tokenizer from this [link](https://drive.google.com/drive/u/0/folders/1ryvqriRPpTtEoJShn0rz3zhEGW2FJaI_) and update the variables `bias_model_path` and `bias_tokenizer_path` to the absolute path of the model and tokenizer.
 
 Download fine-tuning dataset from this [link](https://drive.google.com/file/d/1PsBFC82nOLeW7qZwWDZE86Zrb0YGTaa5/view?usp=drive_link) and put it in the `political_bias_classifier` folder.
+
+Please see the following file for the final report for this project: [NLP_Project_Final_Report.pdf](https://github.com/user-attachments/files/24387803/NLP_Project_Final_Report.pdf)
